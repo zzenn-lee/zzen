@@ -230,36 +230,40 @@ import { SITE } from "@/config";
 
 <script>
   function initLightbox() {
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
-    const closeBtn = document.getElementById("lightbox-close");
+    const lightbox = document.getElementById("lightbox") as HTMLElement | null;
+    const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement | null;
+    const closeBtn = document.getElementById("lightbox-close") as HTMLButtonElement | null;
 
     if (!lightbox || !lightboxImg || !closeBtn) return;
 
-    function open(src) {
-      lightboxImg.setAttribute("src", src);
-      lightbox.classList.remove("hidden");
+    const lb = lightbox as HTMLElement;
+    const img = lightboxImg as HTMLImageElement;
+    const closeButton = closeBtn as HTMLButtonElement;
+
+    function open(src: string) {
+      img.setAttribute("src", src);
+      lb.classList.remove("hidden");
     }
 
     function close() {
-      lightbox.classList.add("hidden");
-      lightboxImg.setAttribute("src", "");
+      lb.classList.add("hidden");
+      img.setAttribute("src", "");
     }
 
     document
       .querySelectorAll("[data-lightbox-src]")
-      .forEach(btn =>
-        btn.addEventListener("click", e => {
-          e.preventDefault();
-          const src = btn.getAttribute("data-lightbox-src");
+      .forEach(el =>
+        (el as HTMLElement).addEventListener("click", ev => {
+          ev.preventDefault();
+          const src = (el as HTMLElement).getAttribute("data-lightbox-src");
           if (src) open(src);
         })
       );
 
-    lightbox.addEventListener("click", e => {
-      if (e.target === lightbox) close();
+    lb.addEventListener("click", e => {
+      if (e.target === lb) close();
     });
-    closeBtn.addEventListener("click", close);
+    closeButton.addEventListener("click", close);
     document.addEventListener("keydown", e => {
       if (e.key === "Escape") close();
     });
