@@ -1,121 +1,289 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import IconSearch from "@/assets/icons/IconSearch.svg";
 import { SITE } from "@/config";
-import { SOCIALS } from "@/constants";
 
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+// CV homepage: no blog content needed
 ---
 
-<Layout>
+<Layout title={`Chae Eun Lee | ${SITE.title}`} description={SITE.desc}>
   <Header />
-  <main id="main-content" data-layout="index">
-    <section id="hero" class="pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Mingalaba
-      </h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="inline-block"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
+  <main id="main-content" data-layout="cv" class="pt-8 pb-12">
+    <section id="intro" class="pb-6">
+      <div class="flex items-center gap-6 relative">
+        <h1 class="my-2 inline-block text-4xl font-bold sm:text-5xl">
+          Chae Eun Lee
+        </h1>
+        <img
+          src="/profile.jpg"
+          alt="Portrait of Chae Eun Lee"
+          class="size-24 sm:size-28 rounded-full border border-border object-cover relative translate-y-2 sm:translate-y-3 z-10"
+          loading="eager"
+          decoding="async"
         />
-        <span class="sr-only">RSS Feed</span>
-      </a>
-
-      <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
+      </div>
+      <div class="mt-2 flex flex-wrap items-center gap-3 text-base">
+        <a href="mailto:zzennllee@gmail.com" class="underline decoration-dashed underline-offset-4 hover:text-accent">📧 zzennllee@gmail.com</a>
+        <span>|</span>
+        <a href="https://www.linkedin.com/in/chae-eun-lee-1a4668170?fromQR=1" target="_blank" rel="noopener" class="underline decoration-dashed underline-offset-4 hover:text-accent">🔗 LinkedIn</a>
+      </div>
+      <p class="mt-4">
+        A 3D vision engineer and AI researcher focusing on perception and interaction technologies for XR devices. 
+        Passionate about applying 3D computer vision and AI to XR/AR/VR environments, 
+        and recently interested in graphics and real-time rendering for immersive experiences.
       </p>
-      <p class="mt-2">
-        Read the blog posts or check
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
-      </p>
-      {
-        // only display if at least one social link is enabled
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
     </section>
 
     <Hr />
 
-    {
-      featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-            <ul>
-              {featuredPosts.map(data => (
-                <Card variant="h3" {...data} />
-              ))}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
+    <section id="education" class="pt-10 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">Education</h2>
+      <ul class="mt-3 space-y-2">
+        <li>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+            <div class="font-medium">M.S. in Computer Science, Seoul National University, Korea</div>
+            <div class="text-sm opacity-80">Mar 2020 – Feb 2022</div>
+          </div>
+        </li>
+        <li>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+            <div class="font-medium">B.S. in Computer Science and Engineering, Ewha Womans University, Korea</div>
+            <div class="text-sm opacity-80">Mar 2015 – Feb 2020</div>
+          </div>
+        </li>
+        <li>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+            <div class="font-medium">Exchange Student, California State University, Fullerton, USA</div>
+            <div class="text-sm opacity-80">Jan 2018 – May 2018</div>
+          </div>
+        </li>
+      </ul>
+    </section>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
-          <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
-            )}
-          </ul>
-        </section>
-      )
-    }
+    <Hr />
 
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+    <section id="experience" class="pt-10 pb-6 space-y-6">
+      <h2 class="text-2xl font-semibold tracking-wide">Professional Experience</h2>
+
+      <div>
+        <div class="text-lg font-semibold">Samsung Electronics, Immersive SW Vision Group</div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+          <div class="opacity-90">3D Vision Engineer (AR/VR/XR)</div>
+          <div class="text-sm opacity-80">Mar 2022 – Present</div>
+        </div>
+        <p class="mt-3 opacity-90">
+          Working as a 3D Vision Engineer, developing perception and interaction
+          solutions for XR devices within Samsung’s XR and Immersive SW Vision Group.
+          Collaborating with Google and Qualcomm as part of 
+          <a href="https://youtu.be/wVLBNVlxOb8?si=JBRo3oHbCCTIRuKY" target="_blank" rel="noopener"><strong>Project Moohan (Galaxy XR)</strong></a>
+          and the ongoing AR Glass project.
+        </p>
+        <ul class="mt-3 list-disc ps-8 space-y-1">
+          <li>
+            Collaborated with Google on Project Moohan (Galaxy XR), focusing on hand
+            tracking and gesture recognition for XR interaction.
+          </li>
+          <li>
+            Contributed to the commercialization of the Galaxy XR device, working on
+            real-time perception reliability and the development of hand-tracking and
+            user-interaction algorithms.
+          </li>
+          <li>
+            Integrated perception modules into the perception layer within Android XR (OpenPX).
+          </li>
+          <li>
+            Built Unity and Android-based evaluation applications to visualize and measure
+            hand-tracking accuracy, latency, and stability across OpenXR interfaces.
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-lg font-semibold">Computer Graphics and Image Processing Lab (CGLab), Seoul National University</div>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+          <div class="opacity-90">Graduate Research (M.S. Program)</div>
+          <div class="text-sm opacity-80">Mar 2020 – Feb 2022</div>
+        </div>
+        <ul class="mt-2 list-disc ps-6 space-y-1">
+          <li>
+            Conducted research in medical image processing, focusing on medical image
+            segmentation, semi- and self-supervised learning, and representation learning.
+          </li>
+          <li>
+            Participated in projects on CT/MRI volume rendering, 2D multi-planar reconstruction (MPR),
+            and vision-based labeling tool development for medical datasets, including the AI-based
+            Medical Image Labeling Tools for PACS (Infinitt Healthcare Corporate Project, 2020–2021).
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <Hr />
+
+    <section id="publications" class="pt-10 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">Research Publications</h2>
+      <ul class="mt-3 space-y-4">
+        <!-- New: ISMAR 2025 (With image /publications/7.PNG) -->
+        <li class="flex items-stretch gap-4">
+          <div class="relative flex-none shrink-0 self-stretch w-[7.2rem] sm:w-[14.4rem]">
+            <img src="/publications/7.PNG" alt="EgoBlur publication" class="w-full h-full rounded border object-contain p-1 bg-background" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');" />
+            <div class="w-full h-full rounded border bg-muted/40 hidden"></div>
+            <button class="absolute top-1 right-1 inline-flex items-center justify-center rounded bg-black/50 p-1 text-white hover:bg-black/60" aria-label="Zoom image" data-lightbox-src="/publications/7.PNG">
+              <IconSearch class="size-4" />
+            </button>
+          </div>
+          <div>
+            <strong>C. E. Lee</strong>, A. Namdev, H. Jang, P. Kukreja, M. Shankar, G. Rosh, P. Prasad, S. S. Choi, and K. Kim. <strong>EgoBlur: Blurry Egocentric XR Dataset for Robust Fast Hand Pose Estimation</strong>. Proceedings of the IEEE International Symposium on Mixed and Augmented Reality (ISMAR), 2025.
+            <a href="/publications/7.pdf" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 1. With image /publications/6.PNG -->
+        <li class="flex items-stretch gap-4">
+          <div class="relative flex-none shrink-0 self-stretch w-[7.2rem] sm:w-[14.4rem]">
+            <img src="/publications/6.PNG" alt="Voxel-wise Adversarial Semi-supervised Learning publication" class="w-full h-full rounded border object-contain p-1 bg-background" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');" />
+            <div class="w-full h-full rounded border bg-muted/40 hidden"></div>
+            <button class="absolute top-1 right-1 inline-flex items-center justify-center rounded bg-black/50 p-1 text-white hover:bg-black/60" aria-label="Zoom image" data-lightbox-src="/publications/6.PNG">
+              <IconSearch class="size-4" />
+            </button>
+          </div>
+          <div>
+            <strong>C. E. Lee</strong>, H. Park, Y. G. Shin, M. Chung. <strong>Voxel-wise Adversarial Semi-supervised Learning for Medical Image Segmentation</strong>. Under Review, Computers in Biology and Medicine, 2022.
+            <a href="https://arxiv.org/pdf/2205.06987" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 2. With image /publications/5.PNG -->
+        <li class="flex items-stretch gap-4">
+          <div class="relative flex-none shrink-0 self-stretch w-[7.2rem] sm:w-[14.4rem]">
+            <img src="/publications/5.PNG" alt="Voxel-level Siamese Representation Learning publication" class="w-full h-full rounded border object-contain p-1 bg-background" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');" />
+            <div class="w-full h-full rounded border bg-muted/40 hidden"></div>
+            <button class="absolute top-1 right-1 inline-flex items-center justify-center rounded bg-black/50 p-1 text-white hover:bg-black/60" aria-label="Zoom image" data-lightbox-src="/publications/5.PNG">
+              <IconSearch class="size-4" />
+            </button>
+          </div>
+          <div>
+            <strong>C. E. Lee</strong>, M. Chung, Y. G. Shin. <strong>Voxel-level Siamese Representation Learning for Abdominal Multi-Organ Segmentation</strong>. Computer Methods and Programs in Biomedicine, 2022.
+            <a href="https://arxiv.org/pdf/2105.07672" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 3. With image /publications/3.png -->
+        <li class="flex items-stretch gap-4">
+          <div class="relative flex-none shrink-0 self-stretch w-[7.2rem] sm:w-[14.4rem]">
+            <img src="/publications/4.PNG" alt="Liver Segmentation publication" class="w-full h-full rounded border object-contain p-1 bg-background" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');" />
+            <div class="w-full h-full rounded border bg-muted/40 hidden"></div>
+            <button class="absolute top-1 right-1 inline-flex items-center justify-center rounded bg-black/50 p-1 text-white hover:bg-black/60" aria-label="Zoom image" data-lightbox-src="/publications/4.PNG">
+              <IconSearch class="size-4" />
+            </button>
+          </div>
+          <div>
+            M. Chung et al., <strong>C. E. Lee</strong>, <strong>Liver Segmentation in Abdominal CT via Auto-Context Neural Network and Self-Supervised Contour Attention</strong>. Artificial Intelligence in Medicine, 2021.
+            <a href="https://arxiv.org/pdf/2002.05895" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 4. With image /publications/4.png -->
+        <li class="flex items-stretch gap-4">
+          <div class="relative flex-none shrink-0 self-stretch w-[7.2rem] sm:w-[14.4rem]">
+            <img src="/publications/3.PNG" alt="Individual Tooth Detection publication" class="w-full h-full rounded border object-contain p-1 bg-background" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden');" />
+            <div class="w-full h-full rounded border bg-muted/40 hidden"></div>
+            <button class="absolute top-1 right-1 inline-flex items-center justify-center rounded bg-black/50 p-1 text-white hover:bg-black/60" aria-label="Zoom image" data-lightbox-src="/publications/3.PNG">
+              <IconSearch class="size-4" />
+            </button>
+          </div>
+          <div>
+            M. Chung et al., <strong>C. E. Lee</strong>, <strong>Individual Tooth Detection and Identification from Panoramic X-Ray Images</strong>. Artificial Intelligence in Medicine, 2021.
+            <a href="https://arxiv.org/pdf/2004.05543" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 5. No image -->
+        <li class="flex items-start gap-4">
+          <div>
+            <strong>C. E. Lee</strong>, H. Cho, H. J. Choi, C. W. Sir. <strong>Sitting Posture Prediction and Correction System using an Arduino-based Chair and a Deep Learning Model</strong>. IEEE SOCA 2019.
+            <a href="https://ieeexplore.ieee.org/abstract/document/8953010" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+        <!-- 6. No image -->
+        <li class="flex items-start gap-4">
+          <div>
+            <strong>C. E. Lee</strong>, I. C. Yeo, I. Doh. <strong>Customized embedded system design for lower limb rehabilitation patients</strong>. 2018 20th International Conference on Advanced Communication Technology (ICACT).
+            <a href="https://ieeexplore.ieee.org/abstract/document/8323706" target="_blank" rel="noopener" class="ms-2 underline decoration-dashed underline-offset-4 hover:text-accent" aria-label="Open PDF">[pdf]</a>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <Hr />
+
+    <section id="skills" class="pt-10 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">Technical Skills</h2>
+      <div class="mt-3 space-y-2">
+        <p><strong>Core Expertise:</strong> 3D Vision, XR Perception &amp; Interaction, Computer Vision, Machine Learning</p>
+        <p><strong>Programming:</strong> C/C++, Python, Android Java/Native C++</p>
+        <p><strong>Frameworks:</strong> PyTorch, TensorFlow</p>
+        <p><strong>Graphics &amp; Rendering:</strong> Unity, OpenGL, DirectX, GLSL</p>
+      </div>
+    </section>
   </main>
   <Footer />
 </Layout>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset?.layout;
-    if (indexLayout) {
-      sessionStorage.setItem("backUrl", "/");
+  function initLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const closeBtn = document.getElementById("lightbox-close");
+
+    if (!lightbox || !lightboxImg || !closeBtn) return;
+
+    function open(src) {
+      lightboxImg.setAttribute("src", src);
+      lightbox.classList.remove("hidden");
     }
-  });
+
+    function close() {
+      lightbox.classList.add("hidden");
+      lightboxImg.setAttribute("src", "");
+    }
+
+    document
+      .querySelectorAll("[data-lightbox-src]")
+      .forEach(btn =>
+        btn.addEventListener("click", e => {
+          e.preventDefault();
+          const src = btn.getAttribute("data-lightbox-src");
+          if (src) open(src);
+        })
+      );
+
+    lightbox.addEventListener("click", e => {
+      if (e.target === lightbox) close();
+    });
+    closeBtn.addEventListener("click", close);
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") close();
+    });
+  }
+
+  document.addEventListener("astro:page-load", initLightbox);
+  document.addEventListener("astro:after-swap", initLightbox);
+  initLightbox();
 </script>
+
+<div
+  id="lightbox"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm"
+>
+  <button
+    id="lightbox-close"
+    class="absolute right-4 top-4 rounded bg-white/10 px-3 py-1 text-white hover:bg-white/20"
+  >
+    Close
+  </button>
+  <img
+    id="lightbox-img"
+    src=""
+    alt="Publication image preview"
+    class="max-h-[85vh] max-w-[90vw] rounded border bg-background p-2"
+  />
+</div>
